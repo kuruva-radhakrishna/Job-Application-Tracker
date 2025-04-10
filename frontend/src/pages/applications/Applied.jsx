@@ -108,8 +108,8 @@ const Applied = () => {
 
   return (
     <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Typography variant="h4" sx={{ mb: 4, color: '#101828', fontWeight: 600 }}>
-        Applied Applications
+      <Typography variant="h4" sx={{ mb: 4, color: theme.palette.text.primary, fontWeight: 600 }}>
+        Applied Job Applications
       </Typography>
 
       {error && (

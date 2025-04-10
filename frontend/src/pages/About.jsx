@@ -349,7 +349,7 @@ const About = () => {
         </Box>
       </Container>
 
-      {/* Reviews Section */}
+      {/* Reviews Section
       <Box sx={{ mt: 8, mb: 6 }}>
         <Typography variant="h3" gutterBottom sx={{
           textAlign: 'center',
@@ -360,7 +360,7 @@ const About = () => {
           What Our Users Say
         </Typography>
         <Reviews />
-      </Box>
+      </Box> */}
     </Box>
   );
 };

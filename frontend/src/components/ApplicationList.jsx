@@ -21,7 +21,8 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  TextField
+  TextField,
+  useTheme
 } from '@mui/material';
 import { 
   Delete as DeleteIcon, 
@@ -51,8 +52,9 @@ const ApplicationList = () => {
   const [editSalary, setEditSalary] = useState('');
   const [openDialog, setOpenDialog] = useState(false);
   const { userId } = useUser();
-
+  const theme = useTheme()
   useEffect(() => {
+
     const fetchApplications = async () => {
       if (!userId) {
         setError('No user authenticated');
@@ -171,7 +173,7 @@ const ApplicationList = () => {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4 }}>
-      <Typography variant="h4" sx={{ mb: 4, color: '#101828' }}>
+      <Typography variant="h4" sx={{ mb: 4, color: theme.palette.text.primary  }}>
         Your Applications
       </Typography>
       

@@ -21,7 +21,7 @@ if (isProduction) {
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
-  'https://job-application-tracker-frontend.onrender.com'
+  'https://job-application-tracker-beryl.vercel.app/login'
 ];
 
 app.use(cors({

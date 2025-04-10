@@ -7,6 +7,8 @@ import { useUser } from '../context/UserContext';
 import { useColorMode } from '../theme/ThemeContext';
 import axios from 'axios';
 
+const API_BASE_URL = "https://job-application-tracker-backend-z59w.onrender.com/api";
+
 const Header = () => {
   const navigate = useNavigate();
   const { userId, logout } = useUser();
@@ -18,17 +20,27 @@ const Header = () => {
     const fetchUserData = async () => {
       if (userId) {
         try {
-          const response = await axios.get('/api/users/profile');
-          console.log(response);
+          const response = await axios.get(`${API_BASE_URL}/users/profile`, {
+            withCredentials: true
+          });
+          console.log('User data response:', response.data);
           setUserData(response.data);
-          console.log(userData);
         } catch (error) {
           console.error('Error fetching user data:', error);
+          setUserData(null);
         }
+      } else {
+        setUserData(null);
       }
     };
+
     fetchUserData();
   }, [userId]);
+
+  // Debug log when userData changes
+  useEffect(() => {
+    console.log('Current userData:', userData);
+  }, [userData]);
 
   const handleLogout = async () => {
     try {
@@ -47,7 +59,8 @@ const Header = () => {
         zIndex: (theme) => theme.zIndex.drawer + 1,
         bgcolor: theme.palette.mode === 'light' ? theme.palette.background.paper : '#1F2937',
         boxShadow: 'none',
-        borderBottom: `1px solid ${theme.palette.divider}`
+        borderBottom: `1px solid ${theme.palette.divider}`,
+        color: theme.palette.mode === 'dark' ? '#fff' : theme.palette.text.primary
       }}
     >
       <Toolbar sx={{ justifyContent: 'space-between', height: 64, px: 2 }}>
@@ -61,8 +74,17 @@ const Header = () => {
           }}
           onClick={() => navigate('/')}
         >
-          <WorkIcon sx={{ color: theme.palette.primary.main, fontSize: 28 }} />
-          <Typography variant="h6" sx={{ color: theme.palette.text.primary, fontWeight: 500 }}>
+          <WorkIcon sx={{ 
+            color: theme.palette.mode === 'dark' ? '#fff' : theme.palette.primary.main, 
+            fontSize: 28 
+          }} />
+          <Typography 
+            variant="h6" 
+            sx={{ 
+              color: theme.palette.mode === 'dark' ? '#fff' : theme.palette.text.primary,
+              fontWeight: 500 
+            }}
+          >
             Student Job Tracker
           </Typography>
         </Box>
@@ -76,11 +98,11 @@ const Header = () => {
                   <Typography 
                     variant="body1"
                     sx={{ 
-                      color: theme.palette.text.primary,
+                      color: theme.palette.mode === 'dark' ? '#fff' : theme.palette.text.primary,
                       fontSize: '1rem'
                     }}
                   >
-                    Welcome,{userData.name}
+                    Welcome, {userData.name}
                   </Typography>
                   <Avatar 
                     src={userData.profilePic} 
@@ -100,10 +122,10 @@ const Header = () => {
                     onClick={toggleColorMode}
                     size="small"
                     sx={{
-                      color: theme.palette.text.primary,
+                      color: theme.palette.mode === 'dark' ? '#fff' : theme.palette.text.primary,
                       bgcolor: 'transparent',
                       '&:hover': {
-                        bgcolor: 'rgba(255, 255, 255, 0.1)'
+                        bgcolor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
                       }
                     }}
                   >
@@ -113,11 +135,11 @@ const Header = () => {
                     color="inherit" 
                     onClick={handleLogout}
                     sx={{ 
-                      color: theme.palette.text.primary,
+                      color: theme.palette.mode === 'dark' ? '#fff' : theme.palette.text.primary,
                       textTransform: 'none',
                       fontWeight: 500,
                       '&:hover': {
-                        bgcolor: 'rgba(255, 255, 255, 0.1)'
+                        bgcolor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
                       }
                     }}
                   >
@@ -131,9 +153,9 @@ const Header = () => {
               <IconButton
                 onClick={toggleColorMode}
                 sx={{
-                  color: theme.palette.text.primary,
+                  color: theme.palette.mode === 'dark' ? '#fff' : theme.palette.text.primary,
                   '&:hover': {
-                    backgroundColor: theme.palette.action.hover
+                    backgroundColor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
                   }
                 }}
               >
@@ -143,11 +165,11 @@ const Header = () => {
                 color="inherit" 
                 onClick={() => navigate('/login')}
                 sx={{ 
-                  color: theme.palette.text.primary,
+                  color: theme.palette.mode === 'dark' ? '#fff' : theme.palette.text.primary,
                   textTransform: 'none',
                   fontWeight: 500,
                   '&:hover': {
-                    bgcolor: 'rgba(255, 255, 255, 0.1)'
+                    bgcolor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
                   }
                 }}
               >
@@ -157,11 +179,11 @@ const Header = () => {
                 color="inherit" 
                 onClick={() => navigate('/register')}
                 sx={{ 
-                  color: theme.palette.text.primary,
+                  color: theme.palette.mode === 'dark' ? '#fff' : theme.palette.text.primary,
                   textTransform: 'none',
                   fontWeight: 500,
                   '&:hover': {
-                    bgcolor: 'rgba(255, 255, 255, 0.1)'
+                    bgcolor: theme.palette.mode === 'dark' ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'
                   }
                 }}
               >
