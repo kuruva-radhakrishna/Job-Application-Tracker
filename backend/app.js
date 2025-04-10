@@ -14,9 +14,9 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors({
-  origin: ['http://localhost:5173', 'https://job-application-tracker-beryl.vercel.app'],
+  origin: true;
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
+  credentials: true, // Allow cookies to be sent
   allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }));
 
