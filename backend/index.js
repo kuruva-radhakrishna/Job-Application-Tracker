@@ -8,8 +8,15 @@ const { authenticateToken } = require('./middleware/auth');
 const feedbackRoutes = require('./routes/feedback');
 require('dotenv').config();
 
-
 const app = express();
+
+// Determine if we are in production
+const isProduction = process.env.NODE_ENV === 'production';
+
+// Setup trusted proxy if behind one (useful for Render, Heroku, etc.)
+if (isProduction) {
+  app.set('trust proxy', 1);
+}
 
 const allowedOrigins = [
   'http://localhost:5173',
@@ -19,6 +26,7 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: function(origin, callback) {
+    // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
@@ -26,12 +34,11 @@ app.use(cors({
     }
   },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
+  credentials: true, // Allow cookies to be sent
   allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }));
 
-
-// Session configuration
+// Session configuration with conditional cookie settings
 app.use(session({
   secret: process.env.SESSION_SECRET || 'your-secret-key',
   resave: false,
@@ -43,16 +50,17 @@ app.use(session({
   cookie: {
     maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
     httpOnly: true,
-    secure: true, // Always use secure in production
-    sameSite: 'none' // Required for cross-site cookies
+    secure: isProduction, // Only use secure cookies in production
+    // Set sameSite based on environment: 'none' for production if using cross-site cookies, 'lax' otherwise.
+    sameSite: isProduction ? 'none' : 'lax'
   }
 }));
-
-
 
 // Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Parse JSON bodies
 app.use(express.json());
 
 // MongoDB Connection
@@ -79,4 +87,4 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-}); 
+});
