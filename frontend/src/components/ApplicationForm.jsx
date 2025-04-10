@@ -66,7 +66,7 @@ const ApplicationForm = () => {
     };
   
     try {
-      const response = await axios.post('/api/applications', payload);
+      const response = await axios.post('https://job-application-tracker-beryl.vercel.app//api/', payload);
   
       // Axios only reaches here if the request was successful
       navigate('/applications');
