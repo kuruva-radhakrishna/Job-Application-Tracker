@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const authenticateToken = (req, res, next) => {
   try {
     // Get the user from the session
+    console.log(req.session);
     if (!req.session || !req.session.user) {
       return res.status(401).json({ message: 'Unauthorized - No session' });
     }

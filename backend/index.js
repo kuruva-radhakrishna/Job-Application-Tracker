@@ -11,14 +11,24 @@ require('dotenv').config();
 
 const app = express();
 
-// Middleware
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://your-frontend.onrender.com' // Optional: for production
+];
+
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
-app.use(express.json());
+
 
 // Session configuration
 app.use(session({
