@@ -13,14 +13,21 @@ const app = express();
 
 const allowedOrigins = [
   'http://localhost:5173',
-  'https://your-frontend.onrender.com' // Optional: for production
+  'http://localhost:3000',
+  'https://job-application-tracker-frontend.onrender.com'
 ];
 
 app.use(cors({
-  origin: true,  
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,  
-  allowedHeaders: ['Content-Type', 'Authorization','cookie']
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }));
 
 
@@ -34,10 +41,10 @@ app.use(session({
     collectionName: 'sessions'
   }),
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24*7, // 7 days
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+    secure: true, // Always use secure in production
+    sameSite: 'none' // Required for cross-site cookies
   }
 }));
 

@@ -35,10 +35,23 @@ router.post('/register', async (req, res) => {
       email: user.email
     };
 
-    res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email
+    // Save session explicitly
+    req.session.save((err) => {
+      if (err) {
+        console.error('Session save error:', err);
+        return res.status(500).json({ message: 'Error saving session' });
+      }
+
+      console.log('Session after registration:', {
+        sessionId: req.sessionID,
+        user: req.session.user
+      });
+
+      res.status(201).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email
+      });
     });
   } catch (error) {
     console.error('Register error:', error);
@@ -49,7 +62,7 @@ router.post('/register', async (req, res) => {
 // Login route
 router.post('/login', async (req, res) => {
   try {
-    console.log(req.body);
+    console.log('Login request body:', req.body);
     const { email, password } = req.body;
 
     // Check if user exists
@@ -71,12 +84,23 @@ router.post('/login', async (req, res) => {
       email: user.email
     };
     
-    console.log('Login successful, session:', req.session);
+    // Save session explicitly
+    req.session.save((err) => {
+      if (err) {
+        console.error('Session save error:', err);
+        return res.status(500).json({ message: 'Error saving session' });
+      }
 
-    res.json({
-      _id: user._id,
-      name: user.name,
-      email: user.email
+      console.log('Session after login:', {
+        sessionId: req.sessionID,
+        user: req.session.user
+      });
+
+      res.json({
+        _id: user._id,
+        name: user.name,
+        email: user.email
+      });
     });
   } catch (error) {
     console.error('Login error:', error);
@@ -87,6 +111,12 @@ router.post('/login', async (req, res) => {
 // Get current user
 router.get('/current-user', async (req, res) => {
   try {
+    console.log('Current user session:', {
+      sessionId: req.sessionID,
+      session: req.session,
+      user: req.session?.user
+    });
+
     if (!req.session || !req.session.user) {
       return res.status(401).json({ message: 'Not authenticated' });
     }
@@ -109,12 +139,22 @@ router.get('/current-user', async (req, res) => {
 
 // Logout route
 router.post('/logout', (req, res) => {
+  if (!req.session) {
+    return res.json({ message: 'Already logged out' });
+  }
+
+  const sessionID = req.sessionID;
   req.session.destroy((err) => {
     if (err) {
       console.error('Logout error:', err);
       return res.status(500).json({ message: 'Error logging out' });
     }
-    res.clearCookie('connect.sid');
+    console.log('Session destroyed:', sessionID);
+    res.clearCookie('connect.sid', {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none'
+    });
     res.json({ message: 'Logged out successfully' });
   });
 });
