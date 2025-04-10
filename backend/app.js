@@ -14,8 +14,10 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:5173',
-  credentials: true
+  origin: true,  
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,  
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Session configuration
