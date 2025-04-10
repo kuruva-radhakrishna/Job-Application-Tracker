@@ -1,5 +1,17 @@
 import React, { useState, useEffect } from "react";
-import {  Container,  Paper,  Typography,  Box,  Avatar,  Button,  TextField,  Grid,  CircularProgress,  Alert,  IconButton,  Link,} from "@mui/material";
+import {
+  Container,
+  Paper,
+  Typography,
+  Box,
+  Avatar,
+  Button,
+  TextField,
+  Grid,
+  CircularProgress,
+  Alert,
+  IconButton,
+} from "@mui/material";
 import { PhotoCamera, Upload as UploadIcon, PictureAsPdf, Close } from "@mui/icons-material";
 import axios from "axios";
 import ImageCropDialog from "./ImageCropDialog";
@@ -194,6 +206,7 @@ const Profile = () => {
 
     setError({ message: "", detail: "" });
     setSuccess("");
+    setUploadingResume(true);
 
     console.log("Selected file:", {
       name: file.name,
@@ -209,6 +222,7 @@ const Profile = () => {
         message: errorMsg,
         detail: `File size: ${(file.size / (1024 * 1024)).toFixed(2)}MB`
       });
+      setUploadingResume(false);
       return;
     }
 
@@ -219,10 +233,10 @@ const Profile = () => {
         message: errorMsg,
         detail: `Provided file type: ${file.type}`
       });
+      setUploadingResume(false);
       return;
     }
 
-    setUploadingResume(true);
     const formData = new FormData();
     formData.append("resume", file);
 
@@ -239,9 +253,8 @@ const Profile = () => {
       );
 
       console.log("Upload response:", response.data);
-      setResumeFile(response.data.url);
+      setResumeFile(response.data.resume);
       setSuccess("Resume uploaded successfully!");
-
       await checkAuth(); // Refresh user data in context
     } catch (err) {
       console.error("Resume upload error details:", {
@@ -265,23 +278,27 @@ const Profile = () => {
   };
 
   const handleRemoveResume = async () => {
+    setLoading(true);
+    setError({ message: "", detail: "" });
+    setSuccess("");
+
     try {
-      setError({ message: "", detail: "" });
-      
-      await axios.delete(`${API_BASE_URL}/users/resume`, {
-        withCredentials: true
-      });
+      const response = await axios.delete(
+        `${API_BASE_URL}/users/resume`,
+        { withCredentials: true }
+      );
 
       setResumeFile(null);
       setSuccess("Resume removed successfully!");
-      
       await checkAuth(); // Refresh user data in context
     } catch (err) {
-      console.error("Resume removal error:", err);
+      console.error("Remove resume error:", err);
       setError({
         message: "Failed to remove resume. Please try again.",
         detail: err.response?.data?.message || err.message
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -463,10 +480,124 @@ const Profile = () => {
               }}
             />
           </Box>
-  
-          {/* Resume upload section remains unchanged unless you want to theme that too */}
-          {/* ... existing resume upload code ... */}
-  
+
+          {/* Resume Section */}
+          <Box>
+            <Typography
+              sx={(theme) => ({
+                mb: 2,
+                fontWeight: 500,
+                color:
+                  theme.palette.mode === "dark"
+                    ? "#90caf9"
+                    : theme.palette.text.secondary,
+              })}
+            >
+              Resume
+            </Typography>
+            <Grid container spacing={2} alignItems="flex-start" justifyContent="space-between">
+              <Grid item>
+                <Box>
+                  <input
+                    accept=".pdf"
+                    style={{ display: 'none' }}
+                    id="resume-upload"
+                    type="file"
+                    onChange={handleResumeUpload}
+                  />
+                  <label htmlFor="resume-upload">
+                    <Button
+                      variant="contained"
+                      component="span"
+                      startIcon={<UploadIcon />}
+                      disabled={uploadingResume}
+                      sx={{
+                        bgcolor: "#1976d2",
+                        color: "white",
+                        py: 1,
+                        px: 2,
+                        borderRadius: 1,
+                        textTransform: "none",
+                        fontSize: "0.9rem",
+                        fontWeight: 500,
+                        "&:hover": {
+                          bgcolor: "#1565c0",
+                        },
+                      }}
+                    >
+                      {uploadingResume ? (
+                        <CircularProgress size={24} color="inherit" />
+                      ) : (
+                        'Upload Resume'
+                      )}
+                    </Button>
+                  </label>
+                  <Typography
+                    variant="caption"
+                    display="block"
+                    sx={(theme) => ({
+                      mt: 1,
+                      color: theme.palette.mode === "dark" ? "#90caf9" : theme.palette.text.secondary,
+                    })}
+                  >
+                    Only PDF files are allowed. Maximum size: 5MB
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="outlined"
+                  color="error"
+                  onClick={handleRemoveResume}
+                  startIcon={<Close />}
+                  sx={{
+                    borderRadius: 1,
+                    textTransform: "none",
+                    fontSize: "0.9rem",
+                    fontWeight: 500,
+                  }}
+                >
+                  Remove Resume
+                </Button>
+              </Grid>
+            </Grid>
+
+            {resumeFile && (
+              <Box 
+                sx={(theme) => ({ 
+                  mt: 3,
+                  p: 3,
+                  borderRadius: 2,
+                  bgcolor: theme.palette.mode === "dark" ? "#1e1e1e" : "#f8f9fa",
+                  border: `1px solid ${theme.palette.divider}`,
+                })}
+              >
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                  <PictureAsPdf sx={{ color: "#1976d2" }} />
+                  <Typography
+                    sx={(theme) => ({
+                      fontWeight: 500,
+                      color: theme.palette.mode === "dark" ? "#90caf9" : theme.palette.text.primary,
+                    })}
+                  >
+                    Resume Preview
+                  </Typography>
+                </Box>
+                <iframe
+                  src={resumeFile}
+                  style={{
+                    width: '100%',
+                    height: '500px',
+                    border: 'none',
+                    borderRadius: '4px',
+                    backgroundColor: 'white',
+                  }}
+                  title="Resume Preview"
+                />
+              </Box>
+            )}
+          </Box>
+
           {/* Submit Button */}
           <Button
             type="submit"
@@ -493,9 +624,26 @@ const Profile = () => {
               "Save Changes"
             )}
           </Button>
+
+          {/* Error and Success Messages */}
+          {error.message && (
+            <Alert severity="error" sx={{ mt: 2, borderRadius: 1 }}>
+              {error.message}
+              {error.detail && (
+                <Typography variant="caption" display="block">
+                  {error.detail}
+                </Typography>
+              )}
+            </Alert>
+          )}
+          {success && (
+            <Alert severity="success" sx={{ mt: 2, borderRadius: 1 }}>
+              {success}
+            </Alert>
+          )}
         </Box>
       </Paper>
-  
+
       <ImageCropDialog
         open={cropDialogOpen}
         onClose={() => {
@@ -510,7 +658,6 @@ const Profile = () => {
       />
     </Container>
   );
-  
 };
 
 export default Profile;

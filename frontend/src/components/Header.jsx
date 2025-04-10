@@ -19,7 +19,9 @@ const Header = () => {
       if (userId) {
         try {
           const response = await axios.get('/api/users/profile');
+          console.log(response);
           setUserData(response.data);
+          console.log(userData);
         } catch (error) {
           console.error('Error fetching user data:', error);
         }
@@ -66,67 +68,63 @@ const Header = () => {
         </Box>
 
         {/* Right side - Authentication */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
           {userId ? (
             <>
               {userData && (
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                  <Typography sx={{ color: theme.palette.text.primary, fontWeight: 500 }}>
-                    Welcome, {userData.name}
-                  </Typography>
-                  <IconButton
-                    onClick={toggleColorMode}
-                    sx={{
+                  <Typography 
+                    variant="body1"
+                    sx={{ 
                       color: theme.palette.text.primary,
-                      '&:hover': {
-                        backgroundColor: theme.palette.action.hover
-                      }
+                      fontSize: '1rem'
                     }}
                   >
-                    {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
-                  </IconButton>
-                  <Divider orientation="vertical" flexItem sx={{ bgcolor: theme.palette.divider, height: 24 }} />
-                  <Box 
+                    Welcome,{userData.name}
+                  </Typography>
+                  <Avatar 
+                    src={userData.profilePic} 
+                    alt={userData.name}
                     sx={{ 
-                      display: 'flex', 
-                      alignItems: 'center',
-                      gap: 1,
+                      width: 36, 
+                      height: 36,
+                      bgcolor: '#6366f1',
                       cursor: 'pointer',
                       '&:hover': { opacity: 0.8 }
                     }}
                     onClick={() => navigate('/profile')}
                   >
-                    <Avatar 
-                      src={userData.profilePic} 
-                      alt={userData.name}
-                      sx={{ 
-                        width: 32, 
-                        height: 32,
-                        bgcolor: theme.palette.primary.main,
-                        fontSize: '0.875rem'
-                      }}
-                    >
-                      {userData.name?.charAt(0)}
-                    </Avatar>
-                  </Box>
+                    {!userData.profilePic && userData.name?.charAt(0)}
+                  </Avatar>
+                  <IconButton
+                    onClick={toggleColorMode}
+                    size="small"
+                    sx={{
+                      color: theme.palette.text.primary,
+                      bgcolor: 'transparent',
+                      '&:hover': {
+                        bgcolor: 'rgba(255, 255, 255, 0.1)'
+                      }
+                    }}
+                  >
+                    {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+                  </IconButton>
+                  <Button 
+                    color="inherit" 
+                    onClick={handleLogout}
+                    sx={{ 
+                      color: theme.palette.text.primary,
+                      textTransform: 'none',
+                      fontWeight: 500,
+                      '&:hover': {
+                        bgcolor: 'rgba(255, 255, 255, 0.1)'
+                      }
+                    }}
+                  >
+                    Logout
+                  </Button>
                 </Box>
               )}
-              <Button 
-                color="inherit" 
-                onClick={handleLogout}
-                sx={{ 
-                  color: theme.palette.text.primary,
-                  textTransform: 'none',
-                  fontWeight: 500,
-                  px: 2,
-                  borderRadius: 1,
-                  '&:hover': {
-                    bgcolor: theme.palette.action.hover
-                  }
-                }}
-              >
-                Logout
-              </Button>
             </>
           ) : (
             <>
@@ -148,10 +146,8 @@ const Header = () => {
                   color: theme.palette.text.primary,
                   textTransform: 'none',
                   fontWeight: 500,
-                  px: 2,
-                  borderRadius: 1,
                   '&:hover': {
-                    bgcolor: theme.palette.action.hover
+                    bgcolor: 'rgba(255, 255, 255, 0.1)'
                   }
                 }}
               >
@@ -164,10 +160,8 @@ const Header = () => {
                   color: theme.palette.text.primary,
                   textTransform: 'none',
                   fontWeight: 500,
-                  px: 2,
-                  borderRadius: 1,
                   '&:hover': {
-                    bgcolor: theme.palette.action.hover
+                    bgcolor: 'rgba(255, 255, 255, 0.1)'
                   }
                 }}
               >

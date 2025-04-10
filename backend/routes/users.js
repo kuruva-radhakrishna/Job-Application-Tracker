@@ -82,6 +82,7 @@ router.get('/profile', authenticateToken, async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
     res.json(getUserData(user));
+    console.log(res);
   } catch (error) {
     console.error('Get profile error:', error);
     res.status(500).json({ message: 'Error fetching profile' });
@@ -247,23 +248,11 @@ router.post('/upload-resume', authenticateToken, uploadResume.single('resume'), 
         format: 'pdf'
       }
     ).catch(error => {
-      console.error('Cloudinary resume upload error:', {
-        error: error.message,
-        errorDetails: error.http_code ? {
-          http_code: error.http_code,
-          public_id: error.public_id,
-          secure_url: error.secure_url
-        } : null
-      });
+      console.error('Cloudinary resume upload error:', error);
       throw new Error(`Cloudinary upload failed: ${error.message}`);
     });
 
-    console.log('Resume upload successful:', {
-      public_id: uploadResponse.public_id,
-      secure_url: uploadResponse.secure_url
-    });
-
-    // Update user's resume URL
+    // Update user with new resume URL
     const user = await User.findByIdAndUpdate(
       req.session.user._id,
       { 
@@ -283,13 +272,10 @@ router.post('/upload-resume', authenticateToken, uploadResume.single('resume'), 
     req.session.user = getUserData(user);
     await req.session.save();
 
-    res.json({ url: uploadResponse.secure_url });
+    res.json(getUserData(user));
   } catch (error) {
     console.error('Resume upload error:', error);
-    res.status(500).json({ 
-      message: 'Failed to upload resume',
-      detail: error.message 
-    });
+    res.status(500).json({ message: 'Error uploading resume' });
   }
 });
 
@@ -317,7 +303,7 @@ router.delete('/resume', authenticateToken, async (req, res) => {
 
     res.json(getUserData(user));
   } catch (error) {
-    console.error('Resume deletion error:', error);
+    console.error('Error deleting resume:', error);
     res.status(500).json({ message: 'Error deleting resume' });
   }
 });
