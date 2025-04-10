@@ -14,10 +14,10 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors({
-  origin: true,  
+  origin: ['http://localhost:3000', 'https://job-application-tracker-frontend.onrender.com'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,  
-  allowedHeaders: ['Content-Type', 'Authorization']
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
 }));
 
 // Session configuration
@@ -26,13 +26,15 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   store: MongoStore.create({
-    mongoUrl: process.env.MONGODB_URI
+    mongoUrl: process.env.MONGODB_URI,
+    ttl: 7 * 24 * 60 * 60 // 7 days
   }),
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24*7, // 7 days
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+    secure: true,
+    sameSite: 'none',
+    domain: process.env.NODE_ENV === 'production' ? '.onrender.com' : undefined
   }
 }));
 

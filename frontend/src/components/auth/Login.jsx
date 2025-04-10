@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Box, Button, TextField, Typography, Container, Alert, CircularProgress, } from "@mui/material";
 import axios from "axios";
@@ -72,7 +72,7 @@ const commonStyles = {
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setUserId } = useUser();
+  const { setUserId,userId } = useUser();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -94,10 +94,22 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("https://job-application-tracker-backend-z59w.onrender.com/api/auth/login", formData);
+      console.log(formData);
+      const response = await axios.post(
+        "https://job-application-tracker-backend-z59w.onrender.com/api/auth/login", 
+        formData,
+        {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+
+      console.log(response);
       if (response.data && response.data._id) {
         setUserId(response.data._id);
-        
+        console.log(response.data._id);
         navigate("/applications");
       } else {
         throw new Error("Invalid response from server");

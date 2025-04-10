@@ -39,6 +39,8 @@ const statusColors = {
   Rejected: 'error'
 };
 
+const API_URL = 'https://job-application-tracker-backend-z59w.onrender.com/api';
+
 const ApplicationList = () => {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -59,9 +61,14 @@ const ApplicationList = () => {
       }
 
       try {
-        const response = await axios.get('https://job-application-tracker-backend-z59w.onrender.com/api/applications', {
-          withCredentials: true
+        const response = await axios.get(`${API_URL}/applications`, {
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json'
+          }
         });
+        console.log(userId);
+        console.log(response);
         setApplications(response.data);
         setError(null);
       } catch (err) {
@@ -77,9 +84,14 @@ const ApplicationList = () => {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      await axios.put(`https://job-application-tracker-backend-z59w.onrender.com/api/applications/${id}`, 
+      await axios.put(`${API_URL}/applications/${id}`, 
         { status: newStatus },
-        { withCredentials: true }
+        { 
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
       );
       setApplications(prev => 
         prev.map(app => app._id === id ? { ...app, status: newStatus } : app)
@@ -92,8 +104,11 @@ const ApplicationList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`https://job-application-tracker-backend-z59w.onrender.com/api/applications/${id}`, {
-        withCredentials: true
+      await axios.delete(`${API_URL}/applications/${id}`, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json'
+        }
       });
       setApplications(applications.filter(app => app._id !== id));
     } catch (err) {
@@ -112,13 +127,18 @@ const ApplicationList = () => {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`https://job-application-tracker-backend-z59w.onrender.com/api/applications/${editingId}`, 
+      await axios.put(`${API_URL}/applications/${editingId}`, 
         { 
           status: editStatus,
           location: editLocation,
           salary: editSalary
         },
-        { withCredentials: true }
+        { 
+          withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
       );
       setApplications(prev => 
         prev.map(app => app._id === editingId ? 

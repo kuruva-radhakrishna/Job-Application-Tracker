@@ -20,7 +20,7 @@ app.use(cors({
   origin: true,  
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,  
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization','cookie']
 }));
 
 
@@ -40,6 +40,8 @@ app.use(session({
     sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
   }
 }));
+
+
 
 // Initialize Passport
 app.use(passport.initialize());

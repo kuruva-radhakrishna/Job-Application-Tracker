@@ -1,9 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
-// Configure axios defaults
-axios.defaults.baseURL = 'https://job-application-tracker-backend-z59w.onrender.com/';
-axios.defaults.withCredentials = true;
+const API_URL = 'https://job-application-tracker-backend-z59w.onrender.com/api';
 
 const UserContext = createContext();
 
@@ -13,11 +11,16 @@ export function UserProvider({ children }) {
 
   const checkAuth = async () => {
     try {
-      const response = await axios.get('/api/auth/current-user');
+      const response = await axios.get(`${API_URL}/auth/current-user`, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log('Auth check response:', response);
       if (response.data && response.data._id) {
-        console.log(response.data);
+        console.log('Setting user ID:', response.data._id);
         setUserId(response.data._id);
-        
       } else {
         setUserId(null);
       }
@@ -31,7 +34,12 @@ export function UserProvider({ children }) {
 
   const logout = async () => {
     try {
-      await axios.post('/api/auth/logout');
+      await axios.post(`${API_URL}/auth/logout`, {}, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
       setUserId(null);
     } catch (error) {
       console.error('Logout error:', error);

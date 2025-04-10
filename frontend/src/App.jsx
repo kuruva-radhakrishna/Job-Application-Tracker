@@ -7,11 +7,15 @@ import AppRoutes from './AppRoutes';
 import { Box } from '@mui/material';
 import { useUser } from './context/UserContext';
 import { ThemeProviderWrapper } from './theme/ThemeContext';
+import { useEffect } from 'react';
 
 const DRAWER_WIDTH = 240;
 
 const AppContent = () => {
   const { userId } = useUser();
+  useEffect(() => {
+    console.log('userId in AppContent:', userId);
+  }, [userId]);
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>
