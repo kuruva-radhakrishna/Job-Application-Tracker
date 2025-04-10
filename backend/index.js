@@ -44,6 +44,7 @@ app.use(session({
 // Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.json());
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI)
