@@ -17,7 +17,7 @@ function App() {
 
   const checkAuthStatus = async () => {
     try {
-      const response = await axios.get('http://localhost:5001/api/auth/current-user', {
+      const response = await axios.get('https://job-application-tracker-backend-z59w.onrender.com/api/auth/current-user', {
         withCredentials: true
       });
       if (response.data.user) {

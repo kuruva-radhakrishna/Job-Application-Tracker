@@ -1,24 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  Container,
-  Paper,
-  Typography,
-  Box,
-  Avatar,
-  Button,
-  TextField,
-  Grid,
-  CircularProgress,
-  Alert,
-  IconButton,
-  Link,
-} from "@mui/material";
+import {  Container,  Paper,  Typography,  Box,  Avatar,  Button,  TextField,  Grid,  CircularProgress,  Alert,  IconButton,  Link,} from "@mui/material";
 import { PhotoCamera, Upload as UploadIcon, PictureAsPdf, Close } from "@mui/icons-material";
 import axios from "axios";
 import ImageCropDialog from "./ImageCropDialog";
 import { useUser } from '../context/UserContext';
 
-const API_BASE_URL = "http://localhost:5001/api";
+const API_BASE_URL = "https://job-application-tracker-backend-z59w.onrender.com/api";
 
 const Profile = () => {
   const { userId, checkAuth } = useUser();

@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Typography,
-  Paper,
-  Stack,
-  Avatar,
-  Chip,
-  CircularProgress,
-  useTheme,
-} from '@mui/material';
+import {  Box,  Typography,  Paper,  Stack,  Avatar,  Chip,  CircularProgress,  useTheme,} from '@mui/material';
 import { FormatQuote } from '@mui/icons-material';
 
 const Reviews = () => {
@@ -20,7 +11,7 @@ const Reviews = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await fetch('http://localhost:5001/api/feedback/public');
+        const response = await fetch('https://job-application-tracker-backend-z59w.onrender.com/api/feedback/public');
         if (!response.ok) {
           throw new Error('Failed to fetch reviews');
         }

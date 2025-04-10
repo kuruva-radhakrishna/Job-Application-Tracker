@@ -26,7 +26,7 @@ import { Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import axios from 'axios';
 import { useTheme } from '@mui/material/styles';
 
-const API_BASE_URL = "http://localhost:5001/api";
+const API_BASE_URL = "https://job-application-tracker-backend-z59w.onrender.com/api";
 
 const Rejected = () => {
   const [applications, setApplications] = useState([]);

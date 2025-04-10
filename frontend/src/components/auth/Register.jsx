@@ -102,7 +102,7 @@ const Register = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post('/api/auth/register', formData);
+      const response = await axios.post('https://job-application-tracker-backend-z59w.onrender.com/api/auth/register', formData);
       if (response.data && response.data._id) {
         setUserId(response.data._id);
         navigate('/applications');

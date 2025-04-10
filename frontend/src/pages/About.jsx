@@ -1,35 +1,6 @@
 import React from 'react';
-import {
-  Container,
-  Paper,
-  Typography,
-  Box,
-  Grid,
-  Avatar,
-  Stack,
-  Link,
-  useTheme,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from '@mui/material';
-import {
-  WorkHistory,
-  QueryStats,
-  BarChart,
-  FolderSpecial,
-  Email,
-  Phone,
-  LinkedIn,
-  GitHub,
-  Check,
-  Timeline,
-  Notifications,
-  Security,
-  CloudUpload,
-  Search,
-} from '@mui/icons-material';
+import {  Container,  Paper,  Typography,  Box,  Grid,  Avatar,  Stack,  Link,  useTheme,  List,  ListItem,  ListItemIcon,  ListItemText,} from '@mui/material';
+import {  WorkHistory,  QueryStats,  BarChart,  FolderSpecial,  Email,  Phone,  LinkedIn,  GitHub,  Check,  Timeline,  Notifications,  Security,  CloudUpload,  Search,} from '@mui/icons-material';
 import profileImage from '../assets/radha.jpg';
 import Reviews from '../components/Reviews';
 

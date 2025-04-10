@@ -59,7 +59,7 @@ const ApplicationList = () => {
       }
 
       try {
-        const response = await axios.get('/api/applications', {
+        const response = await axios.get('https://job-application-tracker-backend-z59w.onrender.com/api/applications', {
           withCredentials: true
         });
         setApplications(response.data);
@@ -77,7 +77,7 @@ const ApplicationList = () => {
 
   const handleStatusChange = async (id, newStatus) => {
     try {
-      await axios.put(`/api/applications/${id}`, 
+      await axios.put(`https://job-application-tracker-backend-z59w.onrender.com/api/applications/${id}`, 
         { status: newStatus },
         { withCredentials: true }
       );
@@ -92,7 +92,7 @@ const ApplicationList = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/applications/${id}`, {
+      await axios.delete(`https://job-application-tracker-backend-z59w.onrender.com/api/applications/${id}`, {
         withCredentials: true
       });
       setApplications(applications.filter(app => app._id !== id));
@@ -112,7 +112,7 @@ const ApplicationList = () => {
 
   const handleUpdate = async () => {
     try {
-      await axios.put(`/api/applications/${editingId}`, 
+      await axios.put(`https://job-application-tracker-backend-z59w.onrender.com/api/applications/${editingId}`, 
         { 
           status: editStatus,
           location: editLocation,

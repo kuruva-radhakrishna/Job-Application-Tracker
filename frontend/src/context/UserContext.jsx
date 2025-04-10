@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
 // Configure axios defaults
-axios.defaults.baseURL = 'http://localhost:5001';
+axios.defaults.baseURL = 'https://job-application-tracker-backend-z59w.onrender.com/';
 axios.defaults.withCredentials = true;
 
 const UserContext = createContext();
@@ -15,7 +15,9 @@ export function UserProvider({ children }) {
     try {
       const response = await axios.get('/api/auth/current-user');
       if (response.data && response.data._id) {
+        console.log(response.data);
         setUserId(response.data._id);
+        
       } else {
         setUserId(null);
       }
