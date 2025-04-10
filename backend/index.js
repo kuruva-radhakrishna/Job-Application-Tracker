@@ -18,21 +18,9 @@ if (isProduction) {
   app.set('trust proxy', 1);
 }
 
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:3000',
-  'https://job-application-tracker-beryl.vercel.app'
-];
 
 app.use(cors({
-  origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: true;
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true, // Allow cookies to be sent
   allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
