@@ -60,13 +60,14 @@ const ApplicationForm = () => {
       return;
     }
   
-    const payload = {
-      ...formData,
-      userId,
-    };
-  
+    
     try {
-      const response = await axios.post('https://job-application-tracker-backend-z59w.onrender.com/api/applications/', payload);
+      const response = await axios.post('https://job-application-tracker-backend-z59w.onrender.com/api/applications/', 
+        {
+        formData,
+        withCredentials : true,
+        }
+      );
   
       // Axios only reaches here if the request was successful
       navigate('/applications');

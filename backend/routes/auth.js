@@ -42,10 +42,10 @@ router.post('/register', async (req, res) => {
         return res.status(500).json({ message: 'Error saving session' });
       }
 
-      console.log('Session after registration:', {
-        sessionId: req.sessionID,
-        user: req.session.user
-      });
+      // console.log('Session after registration:', {
+      //   sessionId: req.sessionID,
+      //   user: req.session.user
+      // });
 
       res.status(201).json({
         _id: user._id,
@@ -62,7 +62,7 @@ router.post('/register', async (req, res) => {
 // Login route
 router.post('/login', async (req, res) => {
   try {
-    console.log('Login request body:', req.body);
+    // console.log('Login request body:', req.body);
     const { email, password } = req.body;
 
     // Check if user exists
@@ -91,10 +91,10 @@ router.post('/login', async (req, res) => {
         return res.status(500).json({ message: 'Error saving session' });
       }
 
-      console.log('Session after login:', {
-        sessionId: req.sessionID,
-        user: req.session.user
-      });
+      // console.log('Session after login:', {
+      //   sessionId: req.sessionID,
+      //   user: req.session.user
+      // });
 
       res.json({
         _id: user._id,
@@ -111,11 +111,11 @@ router.post('/login', async (req, res) => {
 // Get current user
 router.get('/current-user', async (req, res) => {
   try {
-    console.log('Current user session:', {
-      sessionId: req.sessionID,
-      session: req.session,
-      user: req.session?.user
-    });
+    // console.log('Current user session:', {
+    //   sessionId: req.sessionID,
+    //   session: req.session,
+    //   user: req.session?.user
+    // });
 
     if (!req.session || !req.session.user) {
       return res.status(401).json({ message: 'Not authenticated' });
@@ -149,7 +149,7 @@ router.post('/logout', (req, res) => {
       console.error('Logout error:', err);
       return res.status(500).json({ message: 'Error logging out' });
     }
-    console.log('Session destroyed:', sessionID);
+    // console.log('Session destroyed:', sessionID);
     res.clearCookie('connect.sid', {
       httpOnly: true,
       secure: true,

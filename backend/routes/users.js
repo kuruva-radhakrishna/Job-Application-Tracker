@@ -69,7 +69,7 @@ try {
     api_secret: process.env.CLOUDINARY_API_SECRET
   });
   verifyCloudinaryConfig();
-  console.log('Cloudinary configured successfully');
+  // console.log('Cloudinary configured successfully');
 } catch (error) {
   console.error('Cloudinary configuration error:', error);
 }
@@ -82,7 +82,7 @@ router.get('/profile', authenticateToken, async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
     res.json(getUserData(user));
-    console.log(res);
+    // console.log(res);
   } catch (error) {
     console.error('Get profile error:', error);
     res.status(500).json({ message: 'Error fetching profile' });
@@ -155,11 +155,11 @@ router.post('/upload-image', authenticateToken, uploadImage.single('file'), asyn
     }
 
     // Log file details for debugging
-    console.log('Uploading file:', {
-      mimetype: req.file.mimetype,
-      size: req.file.size,
-      originalName: req.file.originalname
-    });
+    // console.log('Uploading file:', {
+    //   mimetype: req.file.mimetype,
+    //   size: req.file.size,
+    //   originalName: req.file.originalname
+    // });
 
     // Convert buffer to base64
     const fileStr = req.file.buffer.toString('base64');
@@ -188,10 +188,10 @@ router.post('/upload-image', authenticateToken, uploadImage.single('file'), asyn
       throw new Error(`Cloudinary upload failed: ${error.message}`);
     });
 
-    console.log('Cloudinary upload successful:', {
-      public_id: uploadResponse.public_id,
-      secure_url: uploadResponse.secure_url
-    });
+    // console.log('Cloudinary upload successful:', {
+    //   public_id: uploadResponse.public_id,
+    //   secure_url: uploadResponse.secure_url
+    // });
 
     res.json({ url: uploadResponse.secure_url });
   } catch (error) {
@@ -229,11 +229,11 @@ router.post('/upload-resume', authenticateToken, uploadResume.single('resume'), 
     }
 
     // Log file details for debugging
-    console.log('Uploading resume:', {
-      mimetype: req.file.mimetype,
-      size: req.file.size,
-      originalName: req.file.originalname
-    });
+    // console.log('Uploading resume:', {
+    //   mimetype: req.file.mimetype,
+    //   size: req.file.size,
+    //   originalName: req.file.originalname
+    // });
 
     // Convert buffer to base64
     const fileStr = req.file.buffer.toString('base64');

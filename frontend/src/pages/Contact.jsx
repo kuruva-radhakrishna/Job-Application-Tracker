@@ -48,7 +48,7 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('/api/feedback', {
+      const response = await fetch('/api/feedback/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

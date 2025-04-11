@@ -7,6 +7,8 @@ const passport = require('./config/passport');
 const { authenticateToken } = require('./middleware/auth');
 const feedbackRoutes = require('./routes/feedback');
 require('dotenv').config();
+const cookieParser = require('cookie-parser');
+
 
 const app = express();
 
@@ -57,7 +59,7 @@ app.use(passport.session());
 
 // Parse JSON bodies
 app.use(express.json());
-
+app.use(cookieParser());
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB connected successfully'))

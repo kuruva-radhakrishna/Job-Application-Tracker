@@ -69,8 +69,8 @@ const ApplicationList = () => {
             'Content-Type': 'application/json'
           }
         });
-        console.log(userId);
-        console.log(response);
+        // console.log(userId);
+        // console.log(response);
         setApplications(response.data);
         setError(null);
       } catch (err) {

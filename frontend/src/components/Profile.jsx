@@ -208,39 +208,25 @@ const Profile = () => {
     setSuccess("");
     setUploadingResume(true);
 
-    console.log("Selected file:", {
-      name: file.name,
-      type: file.type,
-      size: `${(file.size / (1024 * 1024)).toFixed(2)}MB`
-    });
-
-    const MAX_FILE_SIZE = 5 * 1024 * 1024;
-    if (file.size > MAX_FILE_SIZE) {
-      const errorMsg = `File size exceeds 5MB limit. File size: ${(file.size / (1024 * 1024)).toFixed(2)}MB`;
-      console.error(errorMsg);
-      setError({
-        message: errorMsg,
-        detail: `File size: ${(file.size / (1024 * 1024)).toFixed(2)}MB`
-      });
-      setUploadingResume(false);
-      return;
-    }
-
-    if (file.type !== 'application/pdf') {
-      const errorMsg = `Invalid file type. Only PDF files are allowed. Provided: ${file.type}`;
-      console.error(errorMsg);
-      setError({
-        message: errorMsg,
-        detail: `Provided file type: ${file.type}`
-      });
-      setUploadingResume(false);
-      return;
-    }
+    // console.log("Selected file:", {
+    //   name: file.name,
+    //   type: file.type,
+    //   size: `${(file.size / (1024 * 1024)).toFixed(2)}MB`
+    // });
 
     const formData = new FormData();
     formData.append("resume", file);
 
     try {
+      const MAX_FILE_SIZE = 5 * 1024 * 1024;
+      if (file.size > MAX_FILE_SIZE) {
+        throw new Error(`File size exceeds 5MB limit. File size: ${(file.size / (1024 * 1024)).toFixed(2)}MB`);
+      }
+
+      if (file.type !== 'application/pdf') {
+        throw new Error(`Invalid file type. Only PDF files are allowed. Provided: ${file.type}`);
+      }
+
       const response = await axios.post(
         `${API_BASE_URL}/users/upload-resume`,
         formData,
@@ -252,7 +238,7 @@ const Profile = () => {
         }
       );
 
-      console.log("Upload response:", response.data);
+      // console.log("Upload response:", response.data);
       setResumeFile(response.data.resume);
       setSuccess("Resume uploaded successfully!");
       await checkAuth(); // Refresh user data in context

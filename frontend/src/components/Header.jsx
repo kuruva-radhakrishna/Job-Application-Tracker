@@ -23,7 +23,7 @@ const Header = () => {
           const response = await axios.get(`${API_BASE_URL}/users/profile`, {
             withCredentials: true
           });
-          console.log('User data response:', response.data);
+          // console.log('User data response:', response.data);
           setUserData(response.data);
         } catch (error) {
           console.error('Error fetching user data:', error);
@@ -39,7 +39,7 @@ const Header = () => {
 
   // Debug log when userData changes
   useEffect(() => {
-    console.log('Current userData:', userData);
+    // console.log('Current userData:', userData);
   }, [userData]);
 
   const handleLogout = async () => {

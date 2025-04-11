@@ -94,7 +94,7 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      console.log(formData);
+      // console.log(formData);
       const response = await axios.post(
         "https://job-application-tracker-backend-z59w.onrender.com/api/auth/login", 
         formData,
@@ -106,10 +106,10 @@ const Login = () => {
         }
       );
 
-      console.log(response);
+      // console.log(response);
       if (response.data && response.data._id) {
         setUserId(response.data._id);
-        console.log(response.data._id);
+        // console.log(response.data._id);
         navigate("/applications");
       } else {
         throw new Error("Invalid response from server");

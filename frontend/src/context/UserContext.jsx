@@ -17,9 +17,9 @@ export function UserProvider({ children }) {
           'Content-Type': 'application/json'
         }
       });
-      console.log('Auth check response:', response);
+      // console.log('Auth check response:', response);
       if (response.data && response.data._id) {
-        console.log('Setting user ID:', response.data._id);
+        // console.log('Setting user ID:', response.data._id);
         setUserId(response.data._id);
       } else {
         setUserId(null);
