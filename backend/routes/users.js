@@ -69,7 +69,7 @@ try {
     api_secret: process.env.CLOUDINARY_API_SECRET
   });
   verifyCloudinaryConfig();
-  // console.log('Cloudinary configured successfully');
+  console.log('Cloudinary configured successfully');
 } catch (error) {
   console.error('Cloudinary configuration error:', error);
 }

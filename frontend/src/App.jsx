@@ -14,7 +14,6 @@ const DRAWER_WIDTH = 240;
 const AppContent = () => {
   const { userId } = useUser();
   useEffect(() => {
-    console.log('userId in AppContent:', userId);
   }, [userId]);
 
   return (

@@ -59,17 +59,16 @@ const ApplicationForm = () => {
       alert('User not authenticated. Please log in.');
       return;
     }
-  
-    
+
     try {
       const response = await axios.post('https://job-application-tracker-backend-z59w.onrender.com/api/applications/', 
-        {
+        
         formData,
+        {
         withCredentials : true,
         }
       );
   
-      // Axios only reaches here if the request was successful
       navigate('/applications');
     } catch (error) {
       console.error('Error creating application:', error);
