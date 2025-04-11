@@ -25,22 +25,7 @@ const allowedOrigins = [
 ];
 
 app.use(cors({
-  origin: function (origin, callback) {
-    console.log('🔍 Incoming request from origin:', origin);
-
-    if (!origin) {
-      console.log('✅ No origin (e.g., curl or mobile app), allowing...');
-      return callback(null, true);
-    }
-
-    if (allowedOrigins.includes(origin)) {
-      console.log(`✅ Origin allowed: ${origin}`);
-      return callback(null, true);
-    } else {
-      console.log(`❌ Origin NOT allowed by CORS: ${origin}`);
-      return callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
   allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
