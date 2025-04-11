@@ -20,7 +20,7 @@ if (isProduction) {
 
 
 app.use(cors({
-  origin: true;
+  origin: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true, // Allow cookies to be sent
   allowedHeaders: ['Content-Type', 'Authorization', 'Cookie']
